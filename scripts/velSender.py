@@ -27,7 +27,7 @@ class velSystem():
         self.msg.angular.z = 0
         self.defaultVelocity = 1
 
-        self.pub = rospy.Publisher('turtle1/cmd_vel', Twist, queue_size=10)
+        self.pub = rospy.Publisher('firefighter/cmd_vel', Twist, queue_size=10)
 
     def changeVelocity(self, key):
         if key == "w":

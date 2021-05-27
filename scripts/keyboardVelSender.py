@@ -31,7 +31,7 @@ class vel_system():
         self.msg.angular.z = 0
         self.defaultVelocity = 1
 
-        self.pub = rospy.Publisher('turtle1/cmd_vel', Twist, queue_size=10)
+        self.pub = rospy.Publisher('firefighter/cmd_vel', Twist, queue_size=10)
 
     def changeVelocity(self, keylist):
         x = 0
@@ -44,7 +44,12 @@ class vel_system():
                 y += self.KEY_ACTIONS[key]
             if key == "q" or key == "e":
                 w += self.KEY_ACTIONS[key]
+            if key == "up":
+                self.defaultVelocity +=1
+            if key == "down":
+                self.defaultVelocity -=1
 
+        self.defaultVelocity = max(min(self.defaultVelocity,10),1)
         self.msg.linear.x = x*self.defaultVelocity
         self.msg.linear.y = y*self.defaultVelocity
         self.msg.angular.z = w*self.defaultVelocity
@@ -95,8 +100,8 @@ class MyWindow(Gtk.Window):
     def on_key_press_event(self, widget, event):
         # check the event modifiers (can also use SHIFTMASK, etc)
         ctrl = (event.state & Gdk.ModifierType.CONTROL_MASK)
-        key = Gdk.keyval_name(event.keyval)
-
+        key = Gdk.keyval_name(event.keyval).lower()
+        
         if not (key in self.keylist):
             self.keylist[key] = 1
             self.VelSystem.changeVelocity(self.keylist)
@@ -123,6 +128,7 @@ class MyWindow(Gtk.Window):
         self.label.set_text("KEYPRESS MOVEMENT" + 
                             "\nMost Recent Key: %s \n" % self.prev_key + 
                             "\nVELOCITIES" + 
+                            "\nCurrent VEL_COM: " + str(self.VelSystem.defaultVelocity) +
                             "\nLinear:\n" + str(self.VelSystem.msg.linear) + 
                             "\nAngular:\n" + str(self.VelSystem.msg.angular))
 
