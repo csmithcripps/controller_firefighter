@@ -223,3 +223,7 @@ catkin_install_python(PROGRAMS scripts/velReceiver.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+
+catkin_install_python(PROGRAMS scripts/controllerSender.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
